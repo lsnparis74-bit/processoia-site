@@ -12,18 +12,18 @@ en: {
     kicker: "What we automate", title: "Automation for how you actually work",
     businessLabel: "For your business", personalLabel: "For your life",
     businessItems: [
-      { icon: "users", label: "Prospecting & lead gen" },
-      { icon: "receipt", label: "Invoicing & billing" },
-      { icon: "headset", label: "Customer service & support" },
-      { icon: "calendar-clock", label: "Scheduling & admin" },
-      { icon: "bar-chart-3", label: "Reporting" },
-      { icon: "repeat", label: "Follow-ups & CRM" }
+      { icon: "users", label: "Prospecting & lead gen", detail: "Automatically qualify and score new leads the moment they come in, so you only spend time on the ones worth chasing." },
+      { icon: "receipt", label: "Invoicing & billing", detail: "Generate, send, and chase unpaid invoices automatically, with reminders that go out without you thinking about it." },
+      { icon: "headset", label: "Customer service & support", detail: "Answer common questions instantly, any time of day, and hand off to you only when a human touch is actually needed." },
+      { icon: "calendar-clock", label: "Scheduling & admin", detail: "Let clients book, reschedule, and get reminders without a single back-and-forth email." },
+      { icon: "bar-chart-3", label: "Reporting", detail: "Pull the numbers that matter from wherever they live and deliver a clear summary on the schedule you choose." },
+      { icon: "repeat", label: "Follow-ups & CRM", detail: "Make sure no lead or client ever falls through the cracks, with follow-ups that trigger themselves." }
     ],
     personalItems: [
-      { icon: "inbox", label: "Repetitive admin tasks" },
-      { icon: "piggy-bank", label: "Personal finance tracking" },
-      { icon: "bell", label: "Info monitoring & alerts" },
-      { icon: "share-2", label: "Content & social media" }
+      { icon: "inbox", label: "Repetitive admin tasks", detail: "Offload the copy-pasting, sorting, and form-filling that eats your evenings." },
+      { icon: "piggy-bank", label: "Personal finance tracking", detail: "Get spending and income tracked and categorized automatically, with alerts when something looks off." },
+      { icon: "bell", label: "Info monitoring & alerts", detail: "Get notified the moment something you care about changes, instead of checking manually." },
+      { icon: "share-2", label: "Content & social media", detail: "Keep a consistent posting rhythm without spending your evenings scheduling and formatting." }
     ],
     sectorsNote: "Especially useful for professional services, e-commerce, and local businesses."
   },
@@ -47,6 +47,26 @@ en: {
       { value: "24/7", label: "Always on, even outside business hours" },
       { value: "0", label: "Extra hires needed to scale up" }
     ]
+  },
+  agents: {
+    kicker: "AI agents", title: "Beyond automation: systems that act",
+    sub: "An agent doesn't just follow steps — it understands a goal and gets it done.",
+    definition: "An AI agent isn't automation that follows a fixed script. It's a system that understands a goal, checks live information to figure out what's actually going on, takes multi-step action on its own, and adjusts course when something doesn't go as expected — the way a capable person would.",
+    capabilitiesLabel: "What agents can actually do",
+    capabilities: [
+      { icon: "list-checks", label: "Handles a full task end-to-end, not just one step" },
+      { icon: "activity", label: "Makes decisions in real time, using current data" },
+      { icon: "puzzle", label: "Uses multiple tools and systems on your behalf" },
+      { icon: "shield-check", label: "Handles exceptions instead of breaking on them" },
+      { icon: "moon", label: "Keeps working around the clock, unsupervised" },
+      { icon: "brain", label: "Learns your business context to act consistently" }
+    ],
+    highlights: [
+      { value: "1", label: "agent can replace a full-time watch-and-respond role" },
+      { value: "0", label: "added delay between something happening and it being handled" },
+      { value: "∞", label: "volume scales without scaling headcount" }
+    ],
+    closing: "This isn't hype — it's a real shift in what a small team can handle. Businesses that deploy agents free their people for judgment and relationship work, while the repetitive, time-sensitive work runs itself."
   },
   whyMe: {
     kicker: "Why work with me", title: "One person. Full attention.",
@@ -103,18 +123,18 @@ fr: {
     kicker: "Ce qu'on automatise", title: "L'automatisation adaptée à votre façon de travailler",
     businessLabel: "Pour votre entreprise", personalLabel: "Pour votre quotidien",
     businessItems: [
-      { icon: "users", label: "Prospection & génération de leads" },
-      { icon: "receipt", label: "Facturation" },
-      { icon: "headset", label: "Service & support client" },
-      { icon: "calendar-clock", label: "Planification & administratif" },
-      { icon: "bar-chart-3", label: "Reporting" },
-      { icon: "repeat", label: "Relances & CRM" }
+      { icon: "users", label: "Prospection & génération de leads", detail: "Qualifiez et notez automatiquement chaque nouveau lead dès son arrivée, pour ne consacrer du temps qu'à ceux qui le méritent." },
+      { icon: "receipt", label: "Facturation", detail: "Générez, envoyez et relancez les factures impayées automatiquement, avec des rappels qui partent sans que vous y pensiez." },
+      { icon: "headset", label: "Service & support client", detail: "Répondez instantanément aux questions courantes, à toute heure, et transférez vers vous seulement quand un contact humain est vraiment nécessaire." },
+      { icon: "calendar-clock", label: "Planification & administratif", detail: "Laissez vos clients réserver, replanifier et recevoir des rappels sans le moindre échange d'e-mails." },
+      { icon: "bar-chart-3", label: "Reporting", detail: "Récupérez les chiffres qui comptent, où qu'ils se trouvent, et recevez un résumé clair selon le rythme que vous choisissez." },
+      { icon: "repeat", label: "Relances & CRM", detail: "Assurez-vous qu'aucun lead ou client ne passe à la trappe, avec des relances qui se déclenchent d'elles-mêmes." }
     ],
     personalItems: [
-      { icon: "inbox", label: "Tâches administratives répétitives" },
-      { icon: "piggy-bank", label: "Suivi de finances personnelles" },
-      { icon: "bell", label: "Veille & alertes" },
-      { icon: "share-2", label: "Contenu & réseaux sociaux" }
+      { icon: "inbox", label: "Tâches administratives répétitives", detail: "Déchargez-vous du copier-coller, du tri et de la saisie de formulaires qui grignotent vos soirées." },
+      { icon: "piggy-bank", label: "Suivi de finances personnelles", detail: "Suivez vos dépenses et revenus catégorisés automatiquement, avec des alertes dès que quelque chose semble anormal." },
+      { icon: "bell", label: "Veille & alertes", detail: "Soyez notifié dès qu'un sujet qui vous intéresse évolue, au lieu de vérifier manuellement." },
+      { icon: "share-2", label: "Contenu & réseaux sociaux", detail: "Gardez un rythme de publication régulier sans passer vos soirées à programmer et mettre en forme." }
     ],
     sectorsNote: "Particulièrement utile pour les services professionnels, l'e-commerce et les commerces locaux."
   },
@@ -138,6 +158,26 @@ fr: {
       { value: "24/7", label: "Toujours actif, même hors horaires" },
       { value: "0", label: "Embauche supplémentaire pour grandir" }
     ]
+  },
+  agents: {
+    kicker: "Agents IA", title: "Au-delà de l'automatisation : des systèmes qui agissent",
+    sub: "Un agent ne se contente pas de suivre des étapes — il comprend un objectif et le mène à bien.",
+    definition: "Un agent IA n'est pas une automatisation qui suit un script figé. C'est un système qui comprend un objectif, consulte des informations en temps réel pour évaluer la situation, agit de lui-même en plusieurs étapes, et ajuste sa trajectoire quand les choses ne se passent pas comme prévu — comme le ferait une personne compétente.",
+    capabilitiesLabel: "Ce que les agents peuvent vraiment faire",
+    capabilities: [
+      { icon: "list-checks", label: "Prend en charge une tâche de bout en bout, pas juste une étape" },
+      { icon: "activity", label: "Décide en temps réel, à partir de données actuelles" },
+      { icon: "puzzle", label: "Utilise plusieurs outils et systèmes en votre nom" },
+      { icon: "shield-check", label: "Gère les cas particuliers au lieu de planter dessus" },
+      { icon: "moon", label: "Continue de travailler en continu, sans surveillance" },
+      { icon: "brain", label: "Apprend le contexte de votre entreprise pour agir avec cohérence" }
+    ],
+    highlights: [
+      { value: "1", label: "agent peut remplacer une surveillance à temps plein" },
+      { value: "0", label: "délai supplémentaire entre un événement et sa prise en charge" },
+      { value: "∞", label: "volume qui grandit sans faire grandir l'équipe" }
+    ],
+    closing: "Ce n'est pas un effet de mode — c'est un vrai changement dans ce qu'une petite équipe peut gérer. Les entreprises qui déploient des agents libèrent leurs équipes pour le jugement et la relation humaine, pendant que le travail répétitif et urgent tourne tout seul."
   },
   whyMe: {
     kicker: "Pourquoi travailler avec moi", title: "Une seule personne. Toute l'attention.",
@@ -194,18 +234,18 @@ pt: {
     kicker: "O que automatizamos", title: "Automação do jeito que você trabalha",
     businessLabel: "Para o seu negócio", personalLabel: "Para a sua vida",
     businessItems: [
-      { icon: "users", label: "Prospecção & geração de leads" },
-      { icon: "receipt", label: "Faturamento & cobrança" },
-      { icon: "headset", label: "Atendimento & suporte ao cliente" },
-      { icon: "calendar-clock", label: "Agenda & tarefas administrativas" },
-      { icon: "bar-chart-3", label: "Relatórios" },
-      { icon: "repeat", label: "Follow-up & CRM" }
+      { icon: "users", label: "Prospecção & geração de leads", detail: "Qualifique e pontue automaticamente cada novo lead assim que ele chega, para dedicar tempo só aos que realmente valem a pena." },
+      { icon: "receipt", label: "Faturamento & cobrança", detail: "Gere, envie e cobre faturas em atraso automaticamente, com lembretes que saem sem você precisar pensar nisso." },
+      { icon: "headset", label: "Atendimento & suporte ao cliente", detail: "Responda perguntas comuns instantaneamente, a qualquer hora, e transfira para você só quando um toque humano for realmente necessário." },
+      { icon: "calendar-clock", label: "Agenda & tarefas administrativas", detail: "Deixe seus clientes agendarem, remarcarem e receberem lembretes sem uma única troca de e-mails." },
+      { icon: "bar-chart-3", label: "Relatórios", detail: "Puxe os números que importam de onde estiverem e receba um resumo claro no ritmo que você escolher." },
+      { icon: "repeat", label: "Follow-up & CRM", detail: "Garanta que nenhum lead ou cliente seja esquecido, com follow-ups que se disparam sozinhos." }
     ],
     personalItems: [
-      { icon: "inbox", label: "Tarefas administrativas repetitivas" },
-      { icon: "piggy-bank", label: "Controle financeiro pessoal" },
-      { icon: "bell", label: "Monitoramento & alertas" },
-      { icon: "share-2", label: "Conteúdo & redes sociais" }
+      { icon: "inbox", label: "Tarefas administrativas repetitivas", detail: "Livre-se da cópia, organização e preenchimento de formulários que consomem suas noites." },
+      { icon: "piggy-bank", label: "Controle financeiro pessoal", detail: "Tenha gastos e receitas rastreados e categorizados automaticamente, com alertas quando algo parecer fora do normal." },
+      { icon: "bell", label: "Monitoramento & alertas", detail: "Seja avisado no momento em que algo que importa para você mudar, sem precisar checar manualmente." },
+      { icon: "share-2", label: "Conteúdo & redes sociais", detail: "Mantenha um ritmo de postagens consistente sem gastar suas noites agendando e formatando." }
     ],
     sectorsNote: "Especialmente útil para serviços profissionais, e-commerce e negócios locais."
   },
@@ -229,6 +269,26 @@ pt: {
       { value: "24/7", label: "Sempre ativo, mesmo fora do expediente" },
       { value: "0", label: "Contratações extras para crescer" }
     ]
+  },
+  agents: {
+    kicker: "Agentes de IA", title: "Além da automação: sistemas que agem",
+    sub: "Um agente não segue apenas etapas — ele entende um objetivo e o realiza.",
+    definition: "Um agente de IA não é uma automação que segue um roteiro fixo. É um sistema que entende um objetivo, consulta informações em tempo real para avaliar a situação, age sozinho em várias etapas e ajusta o rumo quando algo não sai como esperado — como faria uma pessoa competente.",
+    capabilitiesLabel: "O que os agentes realmente conseguem fazer",
+    capabilities: [
+      { icon: "list-checks", label: "Cuida de uma tarefa do início ao fim, não só de uma etapa" },
+      { icon: "activity", label: "Toma decisões em tempo real, com dados atuais" },
+      { icon: "puzzle", label: "Usa várias ferramentas e sistemas em seu nome" },
+      { icon: "shield-check", label: "Lida com exceções em vez de travar nelas" },
+      { icon: "moon", label: "Continua trabalhando o tempo todo, sem supervisão" },
+      { icon: "brain", label: "Aprende o contexto do seu negócio para agir com consistência" }
+    ],
+    highlights: [
+      { value: "1", label: "agente pode substituir uma vigilância em tempo integral" },
+      { value: "0", label: "atraso extra entre algo acontecer e ser resolvido" },
+      { value: "∞", label: "volume que cresce sem aumentar a equipe" }
+    ],
+    closing: "Isso não é modismo — é uma mudança real no que uma equipe pequena consegue lidar. Negócios que usam agentes liberam as pessoas para julgamento e relacionamento, enquanto o trabalho repetitivo e urgente roda sozinho."
   },
   whyMe: {
     kicker: "Por que trabalhar comigo", title: "Uma pessoa só. Atenção total.",

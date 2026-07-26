@@ -30,6 +30,7 @@
       <div style="display:flex;align-items:center;gap:28px;flex:1;justify-content:center">
         <a href="#automate" style="text-decoration:none;color:var(--color-text);font-size:15px;font-weight:600" style-hover="color:var(--color-accent-700)">{{ t.nav.whatWeAutomate }}</a>
         <a href="#how-it-works" style="text-decoration:none;color:var(--color-text);font-size:15px;font-weight:600" style-hover="color:var(--color-accent-700)">{{ t.nav.howItWorks }}</a>
+        <a href="#agents" style="text-decoration:none;color:var(--color-text);font-size:15px;font-weight:600" style-hover="color:var(--color-accent-700)">{{ t.agents.kicker }}</a>
         <a href="#why-me" style="text-decoration:none;color:var(--color-text);font-size:15px;font-weight:600" style-hover="color:var(--color-accent-700)">{{ t.nav.whyMe }}</a>
         <a href="#faq" style="text-decoration:none;color:var(--color-text);font-size:15px;font-weight:600" style-hover="color:var(--color-accent-700)">{{ t.nav.faq }}</a>
       </div>
@@ -50,7 +51,11 @@
     </div>
   </nav>
 
-  <section id="top" style="position:relative;padding:clamp(48px,8vw,96px) clamp(20px,5vw,56px) clamp(40px,6vw,72px);max-width:1180px;margin:0 auto">
+  <section id="top" style="position:relative;overflow:hidden;padding:clamp(48px,8vw,96px) clamp(20px,5vw,56px) clamp(40px,6vw,72px);max-width:1180px;margin:0 auto">
+    <div style="position:absolute;inset:0;z-index:-2">
+      <img src="./uploads/carlos-muza-hpjSkU2UYSU-unsplash.jpg" alt="" decoding="async" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.5) brightness(1.08);opacity:0.32">
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg, var(--color-bg) 5%, color-mix(in srgb, var(--color-bg) 55%, transparent) 48%, color-mix(in srgb, var(--color-bg) 10%, transparent) 100%)"></div>
+    </div>
     <div style="position:absolute;right:-140px;top:-80px;width:380px;height:380px;border-radius:50%;background:var(--color-accent-2-200);z-index:-1;animation:float-blob 9s ease-in-out infinite"></div>
     <span class="tag tag-accent" style="margin-bottom:20px;display:inline-block">{{ t.hero.eyebrow }}</span>
     <h1 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(38px,6vw,68px);line-height:1.08;margin:0 0 24px;max-width:16ch">
@@ -74,13 +79,18 @@
 
     <div data-reveal="1" style="margin-bottom:36px">
       <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;color:var(--color-accent-700);margin:0 0 16px">{{ t.automate.businessLabel }}</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));gap:16px;align-items:start">
         <sc-for list="{{ businessItems }}" as="item" hint-placeholder-count="6">
-          <div class="card" style="padding:20px;text-align:left">
+          <div class="card" tabIndex="0" onMouseEnter="{{ item.onEnter }}" onMouseLeave="{{ item.onLeave }}" onFocus="{{ item.onFocus }}" onBlur="{{ item.onBlur }}" onClick="{{ item.onClick }}" style="padding:20px;text-align:left;cursor:pointer;outline:none" style-focus="outline:2px solid var(--color-accent);outline-offset:2px">
             <div style="width:44px;height:44px;border-radius:50%;background:var(--color-accent-100);display:flex;align-items:center;justify-content:center;color:var(--color-accent-700);margin-bottom:14px">
               <i data-lucide="{{ item.icon }}" style="width:22px;height:22px"></i>
             </div>
             <p class="card-title" style="font-size:15.5px;margin:0">{{ item.label }}</p>
+            <div style="{{ item.detailStyle }}">
+              <div style="overflow:hidden;min-height:0">
+                <p style="margin:0;padding-top:10px;font-size:13px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 68%, transparent)">{{ item.detail }}</p>
+              </div>
+            </div>
           </div>
         </sc-for>
       </div>
@@ -88,13 +98,18 @@
 
     <div data-reveal="1">
       <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;color:var(--color-accent-2-700);margin:0 0 16px">{{ t.automate.personalLabel }}</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));gap:16px;align-items:start">
         <sc-for list="{{ personalItems }}" as="item" hint-placeholder-count="4">
-          <div class="card" style="padding:20px;text-align:left">
+          <div class="card" tabIndex="0" onMouseEnter="{{ item.onEnter }}" onMouseLeave="{{ item.onLeave }}" onFocus="{{ item.onFocus }}" onBlur="{{ item.onBlur }}" onClick="{{ item.onClick }}" style="padding:20px;text-align:left;cursor:pointer;outline:none" style-focus="outline:2px solid var(--color-accent);outline-offset:2px">
             <div style="width:44px;height:44px;border-radius:50%;background:var(--color-accent-2-100);display:flex;align-items:center;justify-content:center;color:var(--color-accent-2-700);margin-bottom:14px">
               <i data-lucide="{{ item.icon }}" style="width:22px;height:22px"></i>
             </div>
             <p class="card-title" style="font-size:15.5px;margin:0">{{ item.label }}</p>
+            <div style="{{ item.detailStyle }}">
+              <div style="overflow:hidden;min-height:0">
+                <p style="margin:0;padding-top:10px;font-size:13px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 68%, transparent)">{{ item.detail }}</p>
+              </div>
+            </div>
           </div>
         </sc-for>
       </div>
@@ -132,7 +147,11 @@
     <p style="font-size:15px;font-style:italic;color:color-mix(in srgb, var(--color-text) 78%, transparent);max-width:70ch;margin:24px 0 0;padding-left:16px;border-left:3px solid var(--color-accent-2-400)">{{ t.diagram.example }}</p>
   </section>
 
-  <section style="padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px);max-width:1180px;margin:0 auto">
+  <section style="position:relative;overflow:hidden;padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px);max-width:1180px;margin:0 auto">
+    <div style="position:absolute;inset:0;z-index:-1">
+      <img src="./uploads/milad-fakurian-sin5WZzF1U0-unsplash.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.4) brightness(1.05);opacity:0.16">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 30%, color-mix(in srgb, var(--color-bg) 60%, transparent) 75%, var(--color-bg) 100%)"></div>
+    </div>
     <div data-reveal="1" style="margin-bottom:32px">
       <span class="tag tag-accent">{{ t.ai.kicker }}</span>
       <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,4vw,42px);margin:16px 0 8px;max-width:22ch">{{ t.ai.title }}</h2>
@@ -170,8 +189,55 @@
     </div>
   </section>
 
-  <section id="why-me" style="padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px);max-width:1180px;margin:0 auto">
-    <div style="display:flex;gap:clamp(24px,5vw,56px);flex-wrap:wrap-reverse;align-items:flex-start">
+  <section id="agents" style="padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px);max-width:1180px;margin:0 auto">
+    <div data-reveal="1" style="margin-bottom:32px">
+      <span class="tag tag-accent">{{ t.agents.kicker }}</span>
+      <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,4vw,42px);margin:16px 0 8px;max-width:22ch">{{ t.agents.title }}</h2>
+      <p style="font-size:15px;color:color-mix(in srgb, var(--color-text) 72%, transparent);max-width:64ch;margin:0">{{ t.agents.sub }}</p>
+    </div>
+
+    <div data-reveal="1" style="display:flex;gap:clamp(24px,5vw,48px);flex-wrap:wrap;align-items:center;margin-bottom:40px">
+      <p style="flex:2;min-width:280px;font-size:16px;line-height:1.65;margin:0;color:color-mix(in srgb, var(--color-text) 82%, transparent)">{{ t.agents.definition }}</p>
+      <div class="washed" style="flex:1;min-width:220px;max-width:300px;border-radius:calc(2 * var(--radius-lg));overflow:hidden;aspect-ratio:4/3;background:var(--color-neutral-900)">
+        <video ref="{{ brainVideoRef }}" autoPlay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsInline="{{ true }}" preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
+          <source src="./uploads/brain-network-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div data-reveal="1" style="margin-bottom:36px">
+      <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;color:var(--color-accent-700);margin:0 0 16px">{{ t.agents.capabilitiesLabel }}</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:16px">
+        <sc-for list="{{ agentCapabilities }}" as="cap" hint-placeholder-count="6">
+          <div class="card" style="padding:20px;text-align:left">
+            <div style="width:44px;height:44px;border-radius:50%;background:var(--color-accent-100);display:flex;align-items:center;justify-content:center;color:var(--color-accent-700);margin-bottom:14px">
+              <i data-lucide="{{ cap.icon }}" style="width:22px;height:22px"></i>
+            </div>
+            <p class="card-title" style="font-size:15px;margin:0;line-height:1.4">{{ cap.label }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div data-reveal="1" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:16px;margin-bottom:32px">
+      <sc-for list="{{ agentHighlights }}" as="hl" hint-placeholder-count="3">
+        <div style="text-align:center;padding:20px 12px;background:var(--color-accent-2-100);border-radius:var(--radius-lg)">
+          <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,3vw,38px);margin:0;color:var(--color-accent-2-700)">{{ hl.value }}</p>
+          <p style="font-size:13px;margin:6px 0 0;color:color-mix(in srgb, var(--color-text) 74%, transparent)">{{ hl.label }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <p data-reveal="1" style="font-size:15px;line-height:1.6;max-width:70ch;margin:0;color:color-mix(in srgb, var(--color-text) 78%, transparent)">{{ t.agents.closing }}</p>
+  </section>
+
+  <section id="why-me" style="position:relative;overflow:hidden;padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px);max-width:1180px;margin:0 auto">
+    <div style="position:absolute;inset:0;z-index:-1">
+      <img src="./uploads/krakenimages-Y5bvRlcCx8k-unsplash.jpg" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.5) brightness(1.05);opacity:0.14">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 55%, transparent) 25%, color-mix(in srgb, var(--color-bg) 55%, transparent) 80%, var(--color-bg) 100%)"></div>
+    </div>
+
+  <div style="display:flex;gap:clamp(24px,5vw,56px);flex-wrap:wrap-reverse;align-items:flex-start">
       <div style="flex:2;min-width:280px">
         <div data-reveal="1">
           <span class="tag tag-accent-2">{{ t.whyMe.kicker }}</span>
@@ -193,10 +259,9 @@
         </div>
       </div>
       <div class="washed" style="flex:1;min-width:220px;max-width:280px;border-radius:calc(2 * var(--radius-lg));overflow:hidden;aspect-ratio:4/5">
-        <image-slot id="consultant-photo" shape="rect" placeholder="{{ t.whyMe.photoAlt }}" style="width:100%;height:100%"></image-slot>
-      </div>
-    </div>
-  </section>
+
+      <image-slot id="consultant-photo" shape="rect" placeholder="{{ t.whyMe.photoAlt }}" style="width: 275px; height: 344px"></image-slot></div>
+    </div></section>
 
   <section style="padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px);max-width:1180px;margin:0 auto">
     <div data-reveal="1" style="margin-bottom:36px">
@@ -288,12 +353,15 @@ class Component extends DCLogic {
       isMobile: (typeof window !== 'undefined' && window.innerWidth < 860),
       faqOpen: 0,
       diagramInView: false,
-      aiInView: false
+      aiInView: false,
+      hoverBusiness: -1,
+      hoverPersonal: -1
     };
     this.rootRef = React.createRef();
     this.diagramRef = React.createRef();
     this.aiRef = React.createRef();
     this.langMenuRef = React.createRef();
+    this.brainVideoRef = React.createRef();
     this._onResize = this._onResize.bind(this);
     this._onDocClick = this._onDocClick.bind(this);
   }
@@ -305,6 +373,22 @@ class Component extends DCLogic {
     this._setupReveal();
     this._setupObservers();
     this._renderIcons();
+    this._setupSeamlessLoop();
+  }
+
+  _setupSeamlessLoop() {
+    const v = this.brainVideoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.loop = true;
+    v.playsInline = true;
+    this._onBrainVideoTime = () => {
+      if (v.duration && v.duration - v.currentTime < 0.12) v.currentTime = 0;
+    };
+    v.addEventListener('timeupdate', this._onBrainVideoTime);
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    v.addEventListener('loadeddata', tryPlay);
   }
 
   componentDidUpdate() {
@@ -317,6 +401,9 @@ class Component extends DCLogic {
     if (this._ioReveal) this._ioReveal.disconnect();
     if (this._ioDiagram) this._ioDiagram.disconnect();
     if (this._ioAi) this._ioAi.disconnect();
+    if (this.brainVideoRef.current && this._onBrainVideoTime) {
+      this.brainVideoRef.current.removeEventListener('timeupdate', this._onBrainVideoTime);
+    }
   }
 
   _renderIcons() {
@@ -449,12 +536,36 @@ class Component extends DCLogic {
     const processSteps = t ? t.process.steps.map((ps, i) => ({ ...ps, num: String(i + 1).padStart(2, '0') })) : [];
 
     return {
-      rootRef: this.rootRef, diagramRef: this.diagramRef, aiRef: this.aiRef, langMenuRef: this.langMenuRef,
+      rootRef: this.rootRef, diagramRef: this.diagramRef, aiRef: this.aiRef, langMenuRef: this.langMenuRef, brainVideoRef: this.brainVideoRef,
       t, calendlyUrl: PROCESSOIA_CALENDLY_URL,
       showNavLinks: !isMobile,
       langs, currentLangLabel, langMenuOpen: this.state.langMenuOpen, toggleLangMenu: () => this.toggleLangMenu(),
-      businessItems: t ? t.automate.businessItems : [],
-      personalItems: t ? t.automate.personalItems : [],
+      businessItems: t ? t.automate.businessItems.map((it, i) => {
+        const isOpen = this.state.hoverBusiness === i;
+        return {
+          icon: it.icon, label: it.label, detail: it.detail,
+          onEnter: () => this.setState({ hoverBusiness: i }),
+          onLeave: () => this.setState((s) => (s.hoverBusiness === i ? { hoverBusiness: -1 } : null)),
+          onFocus: () => this.setState({ hoverBusiness: i }),
+          onBlur: () => this.setState((s) => (s.hoverBusiness === i ? { hoverBusiness: -1 } : null)),
+          onClick: () => this.setState((s) => ({ hoverBusiness: s.hoverBusiness === i ? -1 : i })),
+          detailStyle: { display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows .32s ease' }
+        };
+      }) : [],
+      personalItems: t ? t.automate.personalItems.map((it, i) => {
+        const isOpen = this.state.hoverPersonal === i;
+        return {
+          icon: it.icon, label: it.label, detail: it.detail,
+          onEnter: () => this.setState({ hoverPersonal: i }),
+          onLeave: () => this.setState((s) => (s.hoverPersonal === i ? { hoverPersonal: -1 } : null)),
+          onFocus: () => this.setState({ hoverPersonal: i }),
+          onBlur: () => this.setState((s) => (s.hoverPersonal === i ? { hoverPersonal: -1 } : null)),
+          onClick: () => this.setState((s) => ({ hoverPersonal: s.hoverPersonal === i ? -1 : i })),
+          detailStyle: { display: 'grid', gridTemplateRows: isOpen ? '1fr' : '0fr', transition: 'grid-template-rows .32s ease' }
+        };
+      }) : [],
+      agentCapabilities: t ? t.agents.capabilities : [],
+      agentHighlights: t ? t.agents.highlights : [],
       diagramItems,
       diagramFlexStyle: isMobile
         ? { display: 'flex', flexDirection: 'column', alignItems: 'center' }
