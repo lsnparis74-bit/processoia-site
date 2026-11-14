@@ -17,13 +17,24 @@ Polices : Sora (titres), Inter (texte), JetBrains Mono (étiquettes), via Google
 | `assets/img/og-*.png` | Images de partage (LinkedIn, WhatsApp...), une par langue |
 | `assets/js/main.js` | Orchestration : scroll fluide (Lenis), timeline du hero, animations des sections (GSAP), langues |
 | `assets/js/hero-scene.js` | Scène 3D du hero (Three.js) : 14 000 particules, 6 500 sur mobile |
-| `assets/js/agent-orb.js` | Orbe 3D de la section Agents, chargée seulement à l'approche |
+| `legal/`, `privacy/`, `fr/mentions-legales/`, `fr/confidentialite/`, `pt/aviso-legal/`, `pt/privacidade/` | Pages légales, **générées** depuis la clé `legal` de `i18n.js` |
 | `assets/js/glsl.js` | Bruit simplex et sprite de particule partagés par les shaders |
 | `assets/css/style.css` | Styles, couleurs en variables en tête de fichier |
 
+## Contenu orienté conversion (refonte du 13/11/2026)
+
+Ordre de la page : hero, Qui je suis (photo, parcours, LinkedIn, chiffres), 3 offres avec prix de départ, réalisations clients (CRM de Frédéric Parisse, relance prospects anonymisée), ce que Louison automatise pour lui (temps gagnés estimés), comment ça marche, pourquoi l'IA, tarifs, vos données, processus, FAQ, réservation Cal.com intégrée.
+
+- **Prix et temps gagnés** : estimations dans `i18n.js` (clés `offers`, `pricing`, `faq`, `about.stats`, `lab`), à garder cohérents entre eux. Les chiffres « 5 » et « ≈30 h » sont aussi dans `index.html` (attributs `data-to`).
+- **Témoignage** : renseigner `work.quote.text` dans les trois langues pour afficher le bloc citation (caché tant qu'il est vide). Ne jamais inventer de citation.
+- **Cal.com** (cal.com/louison-paris-lpjayv/30min) : chaque bouton porte sa source (`utm_content`), la langue est ajoutée par `main.js` (`utm_campaign`). Le module intégré se charge à l'approche de la dernière section.
+- **Mesure d'audience** : Cloudflare Web Analytics, sans cookie, jeton dans `scripts/processoia-site-langues.mjs` (`CLOUDFLARE_TOKEN`). Les statistiques ne remontent que depuis processoia.com, pas en local.
+- **Images de partage** (`assets/img/og-*.png`) : refaites le 13/11 sans la mention des particuliers.
+- **Captures du CRM** (`assets/img/realisations/`) : rangée courbée en 3D qui défile de droite à gauche (`initCurve()` dans `main.js`, inspirée du composant React « Tilted Grid Hero », réécrite sans React). Réglages dans les attributs `data-*` de `.curve` dans `index.html` : courbure (`data-bend`, `data-bend-mobile`), taille des captures (`data-tile`, `data-max`, `data-max-mobile`), écart (`data-gap`), secondes par capture (`data-speed`), fondu des bords (`data-fade`). Survol : arrêt et capture calée au centre ; glisser pour faire défiler ; clic ou bouton « Voir en grand » pour agrandir. Mouvement réduit : rangée immobile, glisser possible. Sans JavaScript, les trois captures s'affichent en grille. WebP recadrés au même format (badge Netlify retiré), une version 820 px et une pleine taille (`data-full`). Légendes dans `work.cases.0.shots`, mention « données fictives » dans `work.cases.0.note`. Originaux dans `context/import/`.
+
 ## Le hero piloté par le scroll
 
-La première page est épinglée pendant ~4,4 écrans de scroll (3,4 sur mobile). Le scroll fait avancer une histoire en 4 chapitres, et la scène 3D suit :
+La première page est épinglée pendant 3 écrans de scroll (2,4 sur mobile). Le scroll fait avancer une histoire en 4 chapitres, et la scène 3D suit :
 
 1. **Chaos** : un nuage de particules et des étiquettes de tâches qui flottent.
 2. **Compréhension** : les étiquettes sont aspirées, les particules forment un noyau (l'IA).
@@ -62,7 +73,6 @@ Puis ouvrir http://127.0.0.1:8765
 
 ## À savoir
 
-- Lien Calendly (`calendly.com/lsnparis74/30min`) présent 6 fois dans `index.html` : le remplacer partout si besoin.
-- « Privacy » et « Terms » ne sont pas encore des liens : il n'existe pas de pages pour l'instant.
+- Lien Cal.com (`cal.com/louison-paris-lpjayv/30min`) présent sur tous les boutons de `index.html` et dans `data-cal-link` : le remplacer partout si besoin.
 - Accessibilité : `prefers-reduced-motion` respecté (scroll natif, pas de dérive automatique, états finaux affichés), navigation clavier, contrastes AA.
 - Bibliothèques chargées par CDN, versions figées : GSAP 3.13.0 (ScrollTrigger, SplitText), Lenis 1.1.20, Three.js 0.170.0, Lucide 0.469.0.

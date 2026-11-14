@@ -157,7 +157,8 @@ function initHero() {
     scrollTrigger: {
       trigger: hero,
       start: 'top top',
-      end: () => '+=' + Math.round(window.innerHeight * (mq('(max-width: 860px)') ? 3.4 : 4.4)),
+      // Histoire raccourcie (4,4 écrans avant) : le visiteur atteint plus vite « Qui je suis » et les offres
+      end: () => '+=' + Math.round(window.innerHeight * (mq('(max-width: 860px)') ? 2.4 : 3)),
       pin: stage,
       scrub: reduceMotion ? true : 1,
       anticipatePin: 1,
@@ -217,16 +218,17 @@ function runIntro(ready) {
   const count = qs('[data-preload-count]');
   const c = { v: 0 };
   const tl = gsap.timeline();
-  tl.to(c, { v: 100, duration: 1.2, ease: 'power2.inOut', onUpdate: () => { count.textContent = String(Math.round(c.v)).padStart(3, '0'); } })
-    .to('.preloader__bar span', { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 0)
+  // Préchargement court : le titre et le bouton doivent apparaître vite, surtout sur téléphone
+  tl.to(c, { v: 100, duration: 0.6, ease: 'power2.inOut', onUpdate: () => { count.textContent = String(Math.round(c.v)).padStart(3, '0'); } })
+    .to('.preloader__bar span', { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, 0)
     .add(() => {
-      // On attend les polices et la scène 3D, 2,5 s au plus
+      // On attend les polices et la scène 3D, 1,2 s au plus
       tl.pause();
-      Promise.race([ready, wait(2500)]).then(() => tl.resume());
-    }, 1.2)
-    .to(pre, { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, 1.3)
+      Promise.race([ready, wait(1200)]).then(() => tl.resume());
+    }, 0.6)
+    .to(pre, { yPercent: -100, duration: 0.8, ease: 'expo.inOut' }, 0.65)
     .set(pre, { display: 'none' })
-    .add(heroIn(), 1.75);
+    .add(heroIn(), 0.95);
 }
 
 /* =========================================================
@@ -313,10 +315,7 @@ function initReveals() {
 const marquee = { rows: [], boost: 0, active: false };
 
 function buildMarquee() {
-  const sets = [
-    t.automate.businessItems.map((i) => i.label),
-    [...t.automate.personalItems.map((i) => i.label), t.agents.kicker]
-  ];
+  const sets = [t.marquee.row1, t.marquee.row2];
   qsa('[data-marquee-track]').forEach((track, i) => {
     const unit = sets[i].map((l) => `<span class="mq__item">${esc(l)}</span><span class="mq__sep"></span>`).join('');
     track.innerHTML = unit.repeat(4);
@@ -350,66 +349,8 @@ function initMarquee() {
 }
 
 /* =========================================================
-   Ce qu'on automatise : onglets, cartes 3D
+   Cartes (offres, ce que j'automatise) : inclinaison 3D au survol
    ========================================================= */
-let placePill = () => {};
-
-function initTabs() {
-  const tabs = qsa('[data-tab]');
-  const pill = qs('.tabs__pill');
-  let current = 'business';
-  let busy = false;
-
-  const place = (btn, instant) => gsap.to(pill, { x: btn.offsetLeft, width: btn.offsetWidth, duration: instant ? 0 : 0.7, ease: 'expo.out' });
-  placePill = () => place(tabs.find((b) => b.dataset.tab === current), true);
-
-  const select = (name, focus) => {
-    if (name === current || busy) return;
-    busy = true;
-    const btn = tabs.find((b) => b.dataset.tab === name);
-    tabs.forEach((b) => {
-      const on = b === btn;
-      b.setAttribute('aria-selected', String(on));
-      b.tabIndex = on ? 0 : -1;
-    });
-    if (focus) btn.focus();
-    place(btn);
-    const from = qs(`[data-panel="${current}"]`);
-    const to = qs(`[data-panel="${name}"]`);
-    current = name;
-    if (reduceMotion) {
-      from.hidden = true;
-      to.hidden = false;
-      busy = false;
-      ScrollTrigger.refresh();
-      return;
-    }
-    gsap.timeline({ onComplete: () => { busy = false; ScrollTrigger.refresh(); } })
-      .to(qsa('[data-card]', from), { y: -24, autoAlpha: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' })
-      .add(() => { from.hidden = true; to.hidden = false; })
-      .fromTo(qsa('[data-card]', to), { y: 50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1, stagger: 0.07, ease: 'expo.out' });
-  };
-
-  tabs.forEach((b) => b.addEventListener('click', () => select(b.dataset.tab)));
-  qs('[data-tabs]').addEventListener('keydown', (e) => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
-    e.preventDefault();
-    const i = tabs.findIndex((b) => b.dataset.tab === current);
-    const n = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-    select(tabs[n].dataset.tab, true);
-  });
-  placePill();
-  ScrollTrigger.addEventListener('refresh', () => placePill());
-
-  if (!reduceMotion) {
-    gsap.from(qsa('[data-panel="business"] [data-card]'), {
-      y: 70, autoAlpha: 0, duration: 1.3, ease: 'expo.out',
-      stagger: { each: 0.08, grid: 'auto', from: 'start' },
-      scrollTrigger: { trigger: '[data-panel="business"]', start: 'top 85%', once: true }
-    });
-  }
-}
-
 function initCards() {
   const tilt = finePointer && !reduceMotion;
   qsa('[data-card]').forEach((card) => {
@@ -587,14 +528,15 @@ function initCounters() {
   qsa('[data-count]').forEach((el) => {
     const from = Number(el.dataset.from);
     const to = Number(el.dataset.to);
+    const prefix = el.dataset.prefix || '';
     const suffix = el.dataset.suffix || '';
     const o = { v: from };
-    el.textContent = from + suffix;
+    el.textContent = prefix + from + suffix;
     ScrollTrigger.create({
       trigger: el,
       start: 'top 88%',
       once: true,
-      onEnter: () => gsap.to(o, { v: to, duration: 2.2, ease: 'expo.out', onUpdate: () => { el.textContent = Math.round(o.v) + suffix; } })
+      onEnter: () => gsap.to(o, { v: to, duration: 2.2, ease: 'expo.out', onUpdate: () => { el.textContent = prefix + Math.round(o.v) + suffix; } })
     });
   });
   qsa('[data-fill]').forEach((el) => {
@@ -603,30 +545,49 @@ function initCounters() {
 }
 
 /* =========================================================
-   Agents : orbe 3D chargée à l'approche
+   Prise de rendez-vous : source de chaque bouton, Calendly intégré
    ========================================================= */
-function initOrb() {
-  const wrap = qs('[data-orb]');
-  if (!wrap) return;
-  let orb = null;
-  let loading = false;
-  new IntersectionObserver(([e]) => {
-    if (e.isIntersecting && !orb && !loading) {
-      loading = true;
-      import('./agent-orb.js')
-        .then(({ AgentOrb }) => {
-          orb = AgentOrb.create(qs('[data-orb-canvas]', wrap), { reduceMotion });
-          orb?.start();
-        })
-        .catch((err) => console.warn('[orb] non chargée :', err));
-    } else if (orb) {
-      e.isIntersecting ? orb.start() : orb.stop();
-    }
-  }, { rootMargin: '200px 0px' }).observe(wrap);
+// Chaque lien Cal.com porte déjà sa source (utm_content) ; on ajoute la langue de la page (utm_campaign)
+function initBookingLinks() {
+  qsa('a[href*="cal.com/"]').forEach((a) => {
+    try {
+      const u = new URL(a.href);
+      u.searchParams.set('utm_campaign', lang);
+      a.href = u.toString();
+    } catch (e) {}
+  });
+}
 
-  if (!reduceMotion) {
-    gsap.from(wrap, { scale: 0.8, autoAlpha: 0, duration: 1.8, ease: 'expo.out', scrollTrigger: { trigger: wrap, start: 'top 85%', once: true } });
-  }
+// Le module Cal.com n'est chargé qu'à l'approche de la section, pour ne pas ralentir la page
+function initBookingEmbed() {
+  const frame = qs('[data-booking]');
+  if (!frame) return;
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    // Chargeur officiel de Cal.com : met les appels en file d'attente le temps que embed.js arrive
+    (function (C, A, L) { const p = (a, ar) => { a.q.push(ar); }; const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal; const ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement('script')).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === 'string') { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ['initNamespace', namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
+    const Cal = window.Cal;
+    Cal('init', 'booking', { origin: 'https://cal.com' });
+    Cal.ns.booking('inline', {
+      elementOrSelector: frame,
+      calLink: frame.dataset.calLink,
+      config: { layout: 'month_view', theme: 'dark', utm_source: 'processoia.com', utm_medium: 'website', utm_content: 'embed', utm_campaign: lang }
+    });
+    Cal.ns.booking('ui', { theme: 'dark', layout: 'month_view', hideEventTypeDetails: false });
+  };
+  new IntersectionObserver(([e], obs) => {
+    if (!e.isIntersecting) return;
+    obs.disconnect();
+    start();
+  }, { rootMargin: '600px 0px' }).observe(frame);
+}
+
+// Le bloc témoignage reste caché tant qu'aucune citation réelle n'est renseignée dans i18n.js
+function initQuote() {
+  const q = qs('[data-quote]');
+  if (q && t.work.quote.text.trim()) q.hidden = false;
 }
 
 /* =========================================================
@@ -832,9 +793,259 @@ function initCursor() {
   const ry = gsap.quickTo(ring, 'y', { duration: 0.55, ease: 'power3' });
   window.addEventListener('pointermove', (e) => { dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); cur.style.opacity = '1'; }, { passive: true });
   document.addEventListener('pointerover', (e) => {
-    cur.classList.toggle('is-hover', !!e.target.closest('a, button, [data-card], .cap, [data-orb]'));
+    cur.classList.toggle('is-hover', !!e.target.closest('a, button, [data-card]'));
   });
   document.documentElement.addEventListener('pointerleave', () => { cur.style.opacity = '0'; });
+}
+
+/* =========================================================
+   Captures du CRM : rangée courbée sur l'intérieur d'un cylindre.
+   Les captures défilent de droite à gauche : le centre est à plat face au
+   visiteur, les bords se courbent vers lui et s'effacent en fondu.
+   Une boîte CSS ne se courbe pas : chaque capture est découpée en bandes
+   verticales, chacune tournée de quelques degrés autour de l'axe du
+   cylindre. La capture entière tourne ensuite autour du même axe.
+   Glisser pour faire défiler, survol pour arrêter, clic pour agrandir.
+   ========================================================= */
+function initCurve() {
+  const CAMERA = 1.6; // distance de la caméra, en rayons du cylindre
+  const SLICES = 16; // bandes par capture
+  const deg = (rad) => (rad * 180) / Math.PI;
+  const turn = (a, r) => `translateZ(${r}px) rotateY(${a}deg) translateZ(${-r}px)`;
+
+  qsa('[data-curve]').forEach((root) => {
+    const band = qs('[data-curve-band]', root);
+    const wrap = root.closest('.case__media') || root;
+    const caption = qs('[data-curve-caption]', wrap);
+    const zoom = qs('[data-curve-zoom]', wrap);
+    const items = qsa('[data-curve-source] img', root).map((img) => ({ thumb: img.getAttribute('src'), full: img.dataset.full, alt: img.alt }));
+    const n = items.length;
+    if (!band || !n) return;
+    const first = qs('[data-curve-source] img', root);
+    const aspect = (+first.getAttribute('width') || 16) / (+first.getAttribute('height') || 9);
+    const opt = (key, fallback) => (Number.isFinite(parseFloat(root.dataset[key])) ? parseFloat(root.dataset[key]) : fallback);
+    const gap = opt('gap', 8) / 100;
+    const cruise = reduceMotion ? 0 : 1 / opt('speed', 5); // captures par seconde
+    const fade = opt('fade', 12);
+    const mask = `linear-gradient(90deg, transparent, #000 ${fade}%, #000 ${100 - fade}%, transparent)`;
+    band.style.maskImage = mask;
+    band.style.webkitMaskImage = mask;
+
+    let L = null; // mise en place calculée pour la taille actuelle
+    let tiles = [];
+    let c = 0; // capture au centre, en continu (0,5 = à mi-chemin entre deux)
+    let v = 0; // vitesse, en captures par seconde
+    let hovered = false;
+    let dragging = false;
+    let shown = null;
+
+    const wrapIndex = (k) => ((k % n) + n) % n;
+
+    const render = () => {
+      if (!L) return;
+      const lo = c - L.columns / 2;
+      tiles.forEach((tile, j) => {
+        // Chaque capture du DOM porte le numéro k de la file qui tombe dans la boucle visible
+        const k = j + L.columns * (Math.floor((lo - j) / L.columns) + 1);
+        const a = (c - k) * L.pitch;
+        if (tile.k !== k) {
+          tile.k = k;
+          const item = items[wrapIndex(k)];
+          const src = L.full ? item.full : item.thumb;
+          tile.imgs.forEach((img) => { if (img.getAttribute('src') !== src) img.src = src; });
+        }
+        tile.el.style.transform = turn(a, L.r);
+        tile.el.style.visibility = Math.abs(a) > L.limit ? 'hidden' : 'visible';
+      });
+      const centre = wrapIndex(Math.round(c));
+      if (centre !== shown && caption) {
+        shown = centre;
+        caption.textContent = items[centre].alt;
+      }
+    };
+
+    const build = () => {
+      const width = band.clientWidth;
+      const height = band.clientHeight;
+      const narrow = width < 640;
+      // Sur téléphone, une courbe plus douce garde la capture du centre lisible
+      const bend = (Math.min(85, Math.max(5, narrow ? opt('bendMobile', 38) : opt('bend', 60))) * Math.PI) / 180;
+      // Rayon qui place le bord du cadre à « bend » radians sur l'arc, vu depuis la caméra
+      const arc = (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
+      const h = Math.min((opt('tile', 70) / 100) * height, ((narrow ? opt('maxMobile', 70) : opt('max', 48)) / 100) * width / aspect);
+      const r = width * arc;
+      if (!(h > 0) || !(r > 0)) return;
+      const unit = deg(h / r); // arc couvert par une hauteur de capture
+      const pitch = (aspect + gap) * unit; // arc entre deux captures
+      const limit = deg(bend) + (aspect * unit) / 2; // au-delà, la capture est hors champ
+      const columns = Math.min(24, Math.max(2, Math.ceil((2 * limit) / pitch)));
+      L = { r, pitch, limit: Math.min(limit, (columns * pitch) / 2), columns, full: h * aspect * (window.devicePixelRatio || 1) > 880 };
+      band.style.perspective = `${r * CAMERA}px`;
+      const share = aspect / SLICES;
+      const w = aspect * h;
+      band.textContent = '';
+      tiles = Array.from({ length: columns }, () => {
+        const el = document.createElement('div');
+        el.className = 'curve__tile';
+        el.dataset.tile = '';
+        el.style.cssText = `left:calc(50% - ${w / 2}px);top:calc(50% - ${h / 2}px);width:${w}px;height:${h}px`;
+        const imgs = [];
+        for (let s = 0; s < SLICES; s++) {
+          const strip = document.createElement('div');
+          strip.className = 'curve__strip';
+          // Un pixel de plus que sa part, pour qu'aucun fil ne s'ouvre entre deux bandes
+          strip.style.cssText = `left:${((aspect - share) / 2) * h}px;width:${share * h + (s === SLICES - 1 ? 0 : 1)}px;height:${h}px;transform:${turn((aspect / 2 - (s + 0.5) * share) * unit, r)}`;
+          const img = document.createElement('img');
+          img.alt = '';
+          img.draggable = false;
+          img.decoding = 'async';
+          img.style.cssText = `left:${-s * share * h}px;width:${w}px;height:${h}px`;
+          strip.appendChild(img);
+          el.appendChild(strip);
+          imgs.push(img);
+        }
+        band.appendChild(el);
+        return { el, imgs, k: null };
+      });
+      render();
+    };
+
+    const tick = (time, deltaMs) => {
+      const dt = Math.min(deltaMs, 64) / 1000;
+      if (!dragging) {
+        // Ralentit jusqu'à l'arrêt au survol, puis cale la capture la plus proche au centre
+        const target = hovered ? 0 : cruise;
+        v += (target - v) * (1 - Math.exp(-dt * 3));
+        c += v * dt;
+        if (target === 0 && Math.abs(v) < 0.08) c += (Math.round(c) - c) * (1 - Math.exp(-dt * 6));
+      }
+      render();
+    };
+
+    const open = (k) => {
+      if (!openLightbox) return;
+      openLightbox(items, wrapIndex(k), {
+        from: zoom,
+        // Au retour, la rangée montre au centre la dernière capture regardée
+        onClose: (i) => {
+          let d = wrapIndex(i - Math.round(c));
+          if (d > n / 2) d -= n;
+          c = Math.round(c) + d;
+          v = 0;
+          hovered = band.matches(':hover');
+          render();
+        },
+      });
+    };
+    zoom?.addEventListener('click', () => open(Math.round(c)));
+
+    band.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovered = true; });
+    band.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hovered = false; });
+
+    // Glisser à la souris ou au doigt ; un simple clic sur une capture l'agrandit
+    let pid = null;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let lastT = 0;
+    band.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 || !L) return;
+      pid = e.pointerId;
+      startX = lastX = e.clientX;
+      startY = e.clientY;
+      lastT = performance.now();
+    });
+    band.addEventListener('pointermove', (e) => {
+      if (e.pointerId !== pid) return;
+      if (!dragging) {
+        const mx = e.clientX - startX;
+        if (Math.abs(mx) < 6 || Math.abs(mx) < Math.abs(e.clientY - startY)) return;
+        dragging = true;
+        v = 0;
+        band.setPointerCapture(pid);
+        root.classList.add('is-dragging');
+      }
+      const now = performance.now();
+      // Au centre, 1 pixel glissé = 1 pixel parcouru
+      const dc = -(e.clientX - lastX) / (L.r * ((L.pitch * Math.PI) / 180));
+      c += dc;
+      v = v * 0.6 + (dc / (Math.max(8, now - lastT) / 1000)) * 0.4;
+      lastX = e.clientX;
+      lastT = now;
+    });
+    const end = (e) => {
+      if (e.pointerId !== pid) return;
+      pid = null;
+      if (dragging) {
+        dragging = false;
+        root.classList.remove('is-dragging');
+        v = performance.now() - lastT > 90 ? 0 : Math.max(-4, Math.min(4, v)); // élan du lancer
+      } else if (e.type === 'pointerup') {
+        const el = e.target.closest('[data-tile]');
+        const tile = el && tiles.find((t) => t.el === el);
+        if (tile) open(tile.k);
+      }
+    };
+    band.addEventListener('pointerup', end);
+    band.addEventListener('pointercancel', end);
+
+    let frame = 0;
+    new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(build);
+    }).observe(band);
+
+    // L'animation ne tourne que lorsque la rangée est à l'écran
+    let running = false;
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !running) { running = true; gsap.ticker.add(tick); }
+      else if (!entry.isIntersecting && running) { running = false; gsap.ticker.remove(tick); }
+    }).observe(root);
+
+    v = cruise;
+    root.classList.add('is-ready');
+  });
+}
+
+/* =========================================================
+   Agrandissement des captures dans une fenêtre
+   ========================================================= */
+let openLightbox = null;
+function initGallery() {
+  const box = qs('[data-lightbox]');
+  if (!box || typeof box.showModal !== 'function') return;
+  const img = qs('[data-lightbox-img]', box);
+  const caption = qs('[data-lightbox-caption]', box);
+  let items = [];
+  let current = 0;
+  let options = {};
+  const show = (n) => {
+    current = (n + items.length) % items.length;
+    img.src = items[current].full;
+    img.alt = items[current].alt;
+    caption.textContent = items[current].alt;
+  };
+  openLightbox = (list, index, opts = {}) => {
+    items = list;
+    options = opts;
+    show(index);
+    box.showModal();
+    lenis?.stop();
+  };
+  qs('[data-lightbox-prev]', box).addEventListener('click', () => show(current - 1));
+  qs('[data-lightbox-next]', box).addEventListener('click', () => show(current + 1));
+  qs('[data-lightbox-close]', box).addEventListener('click', () => box.close());
+  // Un clic hors de l'image (sur le fond) ferme la fenêtre
+  box.addEventListener('click', (e) => { if (e.target === box || e.target.classList.contains('lightbox__fig')) box.close(); });
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+  box.addEventListener('close', () => {
+    lenis?.start();
+    options.onClose?.(current);
+    options.from?.focus({ preventScroll: true });
+  });
 }
 
 /* =========================================================
@@ -851,13 +1062,16 @@ function init() {
   initMarquee();
   buildHeadings();
   initReveals();
-  initTabs();
   initCards();
   initFlow();
   initTerminal();
   initCompare();
   initCounters();
-  initOrb();
+  initQuote();
+  initGallery();
+  initCurve();
+  initBookingLinks();
+  initBookingEmbed();
   initPortrait();
   initStack();
   initFaq();
@@ -875,7 +1089,6 @@ function init() {
     buildWords();
     initFooter();
     buildMarquee();
-    placePill();
     ScrollTrigger.refresh();
   });
   const scene = loadHeroScene();
